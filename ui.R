@@ -20,10 +20,10 @@ navbarPage("FHWA Monthly Motor Fuel Report", id="nav",
 
       # Shiny versions prior to 0.11 should use class = "modal" instead.
       absolutePanel(id = "controls", class = "panel panel-default", fixed = TRUE,
-        draggable = TRUE, top = 60, left = "auto", right = 20, bottom = "auto",
+        draggable = TRUE, top = 100, left = "auto", right = 20, bottom = "auto",
         width = 500, height = "auto",
 
-        h2("2017 Monthly Gasoline Consumption"),
+        h3("2017 Monthly Gasoline Consumption"),
 
         selectInput("State", "State", vars),
 
@@ -36,34 +36,39 @@ navbarPage("FHWA Monthly Motor Fuel Report", id="nav",
       )
     )
   ),
+  
+  # creates the tabs and displays the tables
+  
+  tabPanel("MF33G",
+           h3("Gross Volume of Gasoline/Gasahol Reported by States 2017"),
+           DT::dataTableOutput("mytable1")
+           ),
 
-  tabPanel("Data explorer",
-    fluidRow(
-      column(3,
-        selectInput("states", "States", c("All states"="", structure(state.abb, names=state.name), "Washington, DC"="DC"), multiple=TRUE)
-      ),
-      column(3,
-        conditionalPanel("input.states",
-          selectInput("cities", "Cities", c("All cities"=""), multiple=TRUE)
-        )
-      ),
-      column(3,
-        conditionalPanel("input.states",
-          selectInput("zipcodes", "Zipcodes", c("All zipcodes"=""), multiple=TRUE)
-        )
-      )
-    ),
-    fluidRow(
-      column(1,
-        numericInput("minScore", "Min score", min=0, max=100, value=0)
-      ),
-      column(1,
-        numericInput("maxScore", "Max score", min=0, max=100, value=100)
-      )
-    ),
-    hr(),
-    DT::dataTableOutput("ziptable")
+  tabPanel("MF33GA16",
+           h3("Gross Volume of Gasoline/Gasahol Reported by States 2016"),
+           DT::dataTableOutput("mytable6")
   ),
+  
+  
+  tabPanel("MF33CO16",
+           h3("Monthly Special Fuels & Gasoline/Gasohol Reported by States 2016"),
+           DT::dataTableOutput("mytable2")
+  ),
+  
+  tabPanel("MF33SF17",
+           h3("Monthly Special Fuels Reported by States 2017"),
+           DT::dataTableOutput("mytable3")
+  ),
+  
+  tabPanel("MF33SF16",
+           h3("Monthly Special Fules Reported by States 2016"),
+           DT::dataTableOutput("mytable4")
+  ),
+  
+  tabPanel("Tax Rates",
+           h3("Tax Rates on Motor Fuel"),
+           DT::dataTableOutput("mytable5")
+  )
 
-  conditionalPanel("false", icon("crosshair"))
 )
+   

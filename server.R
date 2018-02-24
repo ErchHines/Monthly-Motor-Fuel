@@ -9,22 +9,26 @@ library(geojsonio)
 library(sp)
 library(ggplot2)
 library(reshape2)
-library(plotly)
+library(DT)
 
 function(input, output, session) {
 
-  ## Interactive Map ###########################################
+## Interactive Map ###########################################
 
+# loads a map with state boundaries
 states <- geojsonio::geojson_read("data/us-states.geojson", what = "sp")
 
+# creates the colors for the map and places them in bins
 bins <- c(-16,-8, -4, -1, 0, 1, 8, 16)
 pal <- colorBin("RdYlBu", domain = PercentChange$September, bins = bins)
 
+# creates the hover over text to display percent change since the previous year
 labels <- sprintf(
   "<strong>%s</strong><br/>%g&#x00025 <br> Sep 16 through Sep 17",
   states$name, PercentChange$September
 ) %>% lapply(htmltools::HTML)
 
+#stockmap
 output$map <- renderLeaflet({
   leaflet(states) %>%
     setView(-96, 37.8, 4) %>%
@@ -56,10 +60,7 @@ output$map <- renderLeaflet({
               position = "bottomright")
 })
 
-# data.r = reactive({
-#   a = subset(mydata.m, variable %in% input$daterange)
-#   return(a)
-# })
+#Takes input from user (see ui.R) and returns a line graph of fuel consumption by month for the year
 
 stateReact <- reactive({
   MGrossVolGas %>% filter(StateName == input$State) 
@@ -81,57 +82,28 @@ output$scatterCollegeIncome <- renderPlot({
 
   ## Data Explorer ###########################################
 
-  observe({
-    cities <- if (is.null(input$states)) character(0) else {
-      filter(cleantable, State %in% input$states) %>%
-        `$`('City') %>%
-        unique() %>%
-        sort()
-    }
-    stillSelected <- isolate(input$cities[input$cities %in% cities])
-    updateSelectInput(session, "cities", choices = cities,
-      selected = stillSelected)
-  })
+# Output for Monthly Motor Fuel Tables
+output$mytable1 = DT::renderDataTable({
+  DT::datatable(GrossVolGas, options = list(lengthMenu = c(10, 25, 51), pageLength = 51))
+})
 
-  observe({
-    zipcodes <- if (is.null(input$states)) character(0) else {
-      cleantable %>%
-        filter(State %in% input$states,
-          is.null(input$cities) | City %in% input$cities) %>%
-        `$`('Zipcode') %>%
-        unique() %>%
-        sort()
-    }
-    stillSelected <- isolate(input$zipcodes[input$zipcodes %in% zipcodes])
-    updateSelectInput(session, "zipcodes", choices = zipcodes,
-      selected = stillSelected)
-  })
+output$mytable2 = DT::renderDataTable({
+  DT::datatable(MF33CO16, options = list(lengthMenu = c(10, 25, 51), pageLength = 51))
+})
 
-  observe({
-    if (is.null(input$goto))
-      return()
-    isolate({
-      map <- leafletProxy("map")
-      map %>% clearPopups()
-      dist <- 0.5
-      zip <- input$goto$zip
-      lat <- input$goto$lat
-      lng <- input$goto$lng
-      showZipcodePopup(zip, lat, lng)
-      map %>% fitBounds(lng - dist, lat - dist, lng + dist, lat + dist)
-    })
-  })
+output$mytable3 = DT::renderDataTable({
+  DT::datatable(MF33SF17, options = list(lengthMenu = c(10, 25, 51), pageLength = 51))
+})
 
-  output$ziptable <- DT::renderDataTable({
-    df <- cleantable %>%
-      filter(
-        is.null(input$states) | State %in% input$states,
-        is.null(input$cities) | City %in% input$cities,
-        is.null(input$zipcodes) | Zipcode %in% input$zipcodes
-      ) %>%
-      mutate(Action = paste('<a class="go-map" href="" data-lat="', Lat, '" data-long="', Long, '" data-zip="', Zipcode, '"><i class="fa fa-crosshairs"></i></a>', sep=""))
-    action <- DT::dataTableAjax(session, df)
+output$mytable4 = DT::renderDataTable({
+  DT::datatable(MF33SF16, options = list(lengthMenu = c(10, 25, 51), pageLength = 51))
+})
 
-    DT::datatable(df, options = list(ajax = list(url = action)), escape = FALSE)
-  })
+output$mytable5 = DT::renderDataTable({
+  DT::datatable(MF121TP1, options = list(lengthMenu = c(10, 25, 51), pageLength = 51))
+})
+
+output$mytable6 = DT::renderDataTable({
+  DT::datatable(MF33GA16, options = list(lengthMenu = c(10, 25, 51), pageLength = 51))
+})
 }
