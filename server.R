@@ -37,6 +37,7 @@ output$map <- renderLeaflet({
       attribution = 'Maps by <a href="http://www.mapbox.com/">Mapbox</a>'
     ) %>%
     addPolygons(
+      group = states$name,
       fillColor = ~pal(PercentChange$September),
       weight = 2,
       opacity = 1,
@@ -68,7 +69,7 @@ stateReact <- reactive({
 
 boldTxt11 <- element_text(face = "bold", size = 11)
 
-output$scatterCollegeIncome <- renderPlot({
+output$FuelbyMonth <- renderPlot({
   # If no zipcodes are in view, don't plot
   stateReact1 <- stateReact()
   
@@ -79,6 +80,12 @@ output$scatterCollegeIncome <- renderPlot({
 
 })
 
+observeEvent(input$map_shape_click, { # update the location selectInput on map clicks
+  p <- input$map_shape_click
+  if(!is.null(p$group)){
+    if(is.null(input$State) || input$State!=p$group) updateSelectInput(session, "State", selected=p$group)
+  }
+})
 
   ## Data Explorer ###########################################
 

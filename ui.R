@@ -25,10 +25,10 @@ navbarPage("FHWA Monthly Motor Fuel Report", id="nav",
 
         h3("2017 Monthly Gasoline Consumption"),
 
-        selectInput("State", "State", vars),
+        selectInput("State", "State", vars, selected = ),
 
         
-        plotOutput("scatterCollegeIncome")
+        plotOutput("FuelbyMonth")
       ),
 
       tags$div(id="cite",
