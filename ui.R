@@ -38,7 +38,7 @@ navbarPage("FHWA Monthly Motor Fuel Report", id="nav",
 
         h3("2017 Monthly Gasoline Consumption"),
 
-        selectInput("State", "State", vars, selected = ),
+        selectInput("State", "Click on a state or select below:", vars, selected = ),
 
         plotOutput("FuelbyMonth"),
         
