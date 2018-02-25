@@ -10,9 +10,22 @@ navbarPage("FHWA Monthly Motor Fuel Report", id="nav",
     div(class="outer",
 
       tags$head(
-        # Include our custom CSS
+        # Include the custom CSS
         includeCSS("styles.css"),
-        includeScript("gomap.js")
+        tags$style(HTML(
+          "
+          table > thead > tr > th,
+          table > tbody > tr > th,
+          table > tfoot > tr > th,
+          table > thead > tr > td,
+          table > tbody > tr > td,
+          table > tfoot > tr > td {
+          padding:2px 10px; 
+          
+          }"  
+          
+          
+        ))
       ),
 
       # If not using custom CSS, set height of leafletOutput to a number instead of percent
@@ -21,14 +34,16 @@ navbarPage("FHWA Monthly Motor Fuel Report", id="nav",
       # Shiny versions prior to 0.11 should use class = "modal" instead.
       absolutePanel(id = "controls", class = "panel panel-default", fixed = TRUE,
         draggable = TRUE, top = 100, left = "auto", right = 20, bottom = "auto",
-        width = 500, height = "auto",
+        width = 450, height = "auto",
 
         h3("2017 Monthly Gasoline Consumption"),
 
         selectInput("State", "State", vars, selected = ),
 
+        plotOutput("FuelbyMonth"),
         
-        plotOutput("FuelbyMonth")
+        uiOutput("FuelFigures")
+
       ),
 
       tags$div(id="cite",
