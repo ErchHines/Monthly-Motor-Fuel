@@ -1,15 +1,12 @@
 library(leaflet)
 library(RColorBrewer)
 library(scales)
-library(lattice)
-library(dplyr)
-library(rgdal)
-library(geojson)
 library(geojsonio)
 library(sp)
 library(ggplot2)
 library(reshape2)
 library(DT)
+
 
 function(input, output, session) {
 
@@ -130,19 +127,19 @@ output$FuelFigures <- renderUI({
 
 # Output for Monthly Motor Fuel Tables
 output$mytable1 = DT::renderDataTable({
-  DT::datatable(GrossVolGas, options = list(lengthMenu = c(10, 25, 51), pageLength = 51))%>% formatCurrency(1:12, '')
+  DT::datatable(GrossVolGas, options = list(lengthMenu = c(10, 25, 51), pageLength = 51))%>% formatCurrency(1:12, '', digits = 0)
 })
 
 output$mytable2 = DT::renderDataTable({
-  DT::datatable(MF33CO16, options = list(lengthMenu = c(10, 25, 51), pageLength = 51))%>% formatCurrency(1:12, '')
+  DT::datatable(MF33CO16, options = list(lengthMenu = c(10, 25, 51), pageLength = 51))%>% formatCurrency(1:12, '', digits = 0)
 })
 
 output$mytable3 = DT::renderDataTable({
-  DT::datatable(MF33SF17, options = list(lengthMenu = c(10, 25, 51), pageLength = 51))%>% formatCurrency(1:12, '')
+  DT::datatable(MF33SF17, options = list(lengthMenu = c(10, 25, 51), pageLength = 51))%>% formatCurrency(1:12, '', digits = 0)
 })
 
 output$mytable4 = DT::renderDataTable({
-  DT::datatable(MF33SF16, options = list(lengthMenu = c(10, 25, 51), pageLength = 51))%>% formatCurrency(1:12, '')
+  DT::datatable(MF33SF16, options = list(lengthMenu = c(10, 25, 51), pageLength = 51))%>% formatCurrency(1:12, '', digits = 0)
 })
 
 output$mytable5 = DT::renderDataTable({
@@ -150,6 +147,6 @@ output$mytable5 = DT::renderDataTable({
 })
 
 output$mytable6 = DT::renderDataTable({
-  DT::datatable(MF33GA16, options = list(lengthMenu = c(10, 25, 51), pageLength = 51))%>% formatCurrency(1:12, '')
+  DT::datatable(MF33GA16, options = list(lengthMenu = c(10, 25, 51), pageLength = 51))%>% formatCurrency(1:12, '', digits = 0)
 })
 }

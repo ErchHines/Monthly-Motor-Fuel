@@ -3,7 +3,6 @@ library(leaflet)
 # Choices for drop-downs
 vars <- MGrossVolGas$StateName
 
-
 navbarPage("FHWA Monthly Motor Fuel Report", id="nav",
 
   tabPanel("Fuels Map",
@@ -11,21 +10,7 @@ navbarPage("FHWA Monthly Motor Fuel Report", id="nav",
 
       tags$head(
         # Include the custom CSS
-        includeCSS("styles.css"),
-        tags$style(HTML(
-          "
-          table > thead > tr > th,
-          table > tbody > tr > th,
-          table > tfoot > tr > th,
-          table > thead > tr > td,
-          table > tbody > tr > td,
-          table > tfoot > tr > td {
-          padding:2px 10px; 
-          
-          }"  
-          
-          
-        ))
+        includeCSS("styles.css")
       ),
 
       # If not using custom CSS, set height of leafletOutput to a number instead of percent
