@@ -38,6 +38,12 @@ navbarPage("FHWA Monthly Motor Fuel Report", id="nav",
   ),
   
   # creates the tabs and displays the tables
+
+  
+  tabPanel("Time Series",
+           h3("California Gasoliine/Gasahol Time Series 2012 - 2016"),
+           plotOutput(outputId = "decompose_ca", height = 500, width=800)
+  ),
   
   tabPanel("MF33G",
            h3("Gross Volume of Gasoline/Gasahol Reported by States 2017"),

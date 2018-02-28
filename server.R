@@ -6,9 +6,19 @@ library(sp)
 library(ggplot2)
 library(reshape2)
 library(DT)
+library(stats)
+
+
 
 
 function(input, output, session) {
+
+  output$decompose_ca <- renderPlot({
+ 
+    ts_ca = ts(CAGA1216$Gasoline, frequency = 12, start = c(2012), end = c(2016,12))
+    decompose_ca = stl(ts_ca, s.window = "periodic")
+    plot(decompose_ca)
+  })
 
 ## Interactive Map ###########################################
 
@@ -21,7 +31,7 @@ pal <- colorBin("RdYlBu", domain = PercentChange[,ncol(PercentChange)], bins = b
 
 # creates the hover over text to display percent change since the previous year, change for month
 labels <- sprintf(
-  "<strong>%s</strong><br/>%g&#x00025 <br> Sep 16 through Sep 17",
+  "<strong>%s</strong><br/>%g&#x00025 <br> Sep 17 versus Sep 16",
   states$name, PercentChange[,ncol(PercentChange)]
 ) %>% lapply(htmltools::HTML)
 
@@ -125,6 +135,8 @@ output$FuelFigures <- renderUI({
 
   ## Data Explorer ###########################################
 
+
+
 # Output for Monthly Motor Fuel Tables
 output$mytable1 = DT::renderDataTable({
   DT::datatable(GrossVolGas, options = list(lengthMenu = c(10, 25, 51), pageLength = 51))%>% formatCurrency(1:12, '', digits = 0)
@@ -143,10 +155,10 @@ output$mytable4 = DT::renderDataTable({
 })
 
 output$mytable5 = DT::renderDataTable({
-  DT::datatable(MF121TP1, options = list(lengthMenu = c(10, 25, 51), pageLength = 51))%>% formatCurrency(1:12, '')
+  DT::datatable(MF121TP1, options = list(lengthMenu = c(10, 25, 51), pageLength = 51))
 })
 
 output$mytable6 = DT::renderDataTable({
-  DT::datatable(MF33GA16, options = list(lengthMenu = c(10, 25, 51), pageLength = 51))%>% formatCurrency(1:12, '', digits = 0)
+  DT::datatable(MF33GA16, options = list(lengthMenu = c(10, 25, 51), pageLength = 51))%>% formatCurrency(1:12, '')
 })
 }
