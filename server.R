@@ -13,11 +13,11 @@ library(stats)
 
 function(input, output, session) {
 
-  output$decompose_ca <- renderPlot({
- 
-    ts_ca = ts(CAGA1216$Gasoline, frequency = 12, start = c(2012), end = c(2016,12))
-    decompose_ca = stl(ts_ca, s.window = "periodic")
-    plot(decompose_ca)
+## Time Series ###############################################
+output$decompose_ca <- renderPlot({
+      ts_ca = ts(CAGA1216$Gasoline, frequency = 12, start = c(2012), end = c(2016,12))
+      decompose_ca = stl(ts_ca, s.window = "periodic")
+      plot(decompose_ca)
   })
 
 ## Interactive Map ###########################################
@@ -37,29 +37,29 @@ labels <- sprintf(
 
 #stockmap
 output$map <- renderLeaflet({
-  leaflet(states) %>%
-    setView(-96, 37.8, 4) %>%
-    addProviderTiles(providers$OpenStreetMap.Mapnik) %>%
-    addPolygons(
-      group = states$name,
-      fillColor = ~pal(PercentChange[,ncol(PercentChange)]),
-      weight = 2,
-      opacity = 1,
-      color = "white",
-      dashArray = "3",
-      fillOpacity = 0.7,
-      highlight = highlightOptions(
-        fillOpacity = 1,
-        bringToFront = FALSE),
-      label = labels,
-      labelOptions = labelOptions(
-        style = list("font-weight" = "normal", padding = "3px 8px"),
-        textsize = "15px",
-        direction = "auto")) %>%
-    addLegend(pal = pal, values = ~PercentChange[,ncol(PercentChange)], opacity = 0.7, 
-              title = "Percent Change Gasoline Consumption" , 
-              labFormat = labelFormat(between = "% - ", suffix = "%"),
-              position = "bottomleft")
+      leaflet(states) %>%
+            setView(-96, 37.8, 4) %>%
+            addProviderTiles(providers$OpenStreetMap.Mapnik) %>%
+            addPolygons(
+                  group = states$name,
+                  fillColor = ~pal(PercentChange[,ncol(PercentChange)]),
+                  weight = 2,
+                  opacity = 1,
+                  color = "white",
+                  dashArray = "3",
+                  fillOpacity = 0.7,
+                  highlight = highlightOptions(
+                        fillOpacity = 1,
+                        bringToFront = FALSE),
+                  label = labels,
+                  labelOptions = labelOptions(
+                        style = list("font-weight" = "normal", padding = "3px 8px"),
+                        textsize = "15px",
+                        direction = "auto")) %>%
+            addLegend(pal = pal, values = ~PercentChange[,ncol(PercentChange)], opacity = 0.7, 
+                  title = "Percent Change Gasoline Consumption" , 
+                  labFormat = labelFormat(between = "% - ", suffix = "%"),
+                  position = "bottomleft")
 })
 
 #Takes input from user (see ui.R) and returns a line graph of fuel consumption by month for the year
@@ -77,30 +77,30 @@ boldTxt11 <- element_text(face = "bold", size = 11)
 
 
 output$FuelbyMonth <- renderPlot({
-  stateReact1 <- stateReact()
+      stateReact1 <- stateReact()
   
-  ggplot(stateReact1, aes(x=variable, y=value, group=StateName)) + geom_line() + geom_point() +
-    scale_y_continuous(name="Gallons", labels = comma) +
-    scale_x_discrete(name= "Month") +
-    theme(axis.text = boldTxt11)
+      ggplot(stateReact1, aes(x=variable, y=value, group=StateName)) + geom_line() + geom_point() +
+            scale_y_continuous(name="Gallons", labels = comma) +
+            scale_x_discrete(name= "Month") +
+            theme(axis.text = boldTxt11)
 
 })
 
 observeEvent(input$map_shape_click, { # update the location selectInput on map clicks
-  p <- input$map_shape_click
-  if(!is.null(p$group)){
-    if(is.null(input$State) || input$State!=p$group) updateSelectInput(session, "State", selected=p$group)
-  }
+      p <- input$map_shape_click
+            if(!is.null(p$group)){
+            if(is.null(input$State) || input$State!=p$group) updateSelectInput(session, "State", selected=p$group)
+            }
 })
 
 
 
 output$FuelFigures <- renderUI({
-  stateReact2 <- stateReact()
-  stateReactSF2 <- stateReactSF()
-  stateReact2$value <- prettyNum(stateReact2$value, big.mark=",")
-  stateReactSF2$value <- prettyNum(stateReactSF2$value, big.mark=",")
-  HTML(paste0("<div style=","background-color:#2060A8;color:white;padding:20px;",">
+      stateReact2 <- stateReact()
+      stateReactSF2 <- stateReactSF()
+      stateReact2$value <- prettyNum(stateReact2$value, big.mark=",")
+      stateReactSF2$value <- prettyNum(stateReactSF2$value, big.mark=",")
+      HTML(paste0("<div style=","background-color:#2060A8;color:white;padding:20px;",">
               <h3>", input$State,"</h3>
               <table cellspacing=20>
               <tr>
@@ -125,37 +125,37 @@ output$FuelFigures <- renderUI({
               
               
 
-  "))
+      "))
 })
 
 
 
-  ## Data Explorer ###########################################
+## Data Explorer ###########################################
 
 
 
 # Output for Monthly Motor Fuel Tables
 output$mytable1 = DT::renderDataTable({
-  DT::datatable(GrossVolGas, options = list(lengthMenu = c(10, 25, 51), pageLength = 51))%>% formatCurrency(1:12, '', digits = 0)
+      DT::datatable(GrossVolGas, options = list(lengthMenu = c(10, 25, 51), pageLength = 51))%>% formatCurrency(1:12, '', digits = 0)
 })
 
 output$mytable2 = DT::renderDataTable({
-  DT::datatable(MF33CO16, options = list(lengthMenu = c(10, 25, 51), pageLength = 51))%>% formatCurrency(1:12, '', digits = 0)
+      DT::datatable(MF33CO16, options = list(lengthMenu = c(10, 25, 51), pageLength = 51))%>% formatCurrency(1:12, '', digits = 0)
 })
 
 output$mytable3 = DT::renderDataTable({
-  DT::datatable(MF33SF17, options = list(lengthMenu = c(10, 25, 51), pageLength = 51))%>% formatCurrency(1:12, '', digits = 0)
+      DT::datatable(MF33SF17, options = list(lengthMenu = c(10, 25, 51), pageLength = 51))%>% formatCurrency(1:12, '', digits = 0)
 })
 
 output$mytable4 = DT::renderDataTable({
-  DT::datatable(MF33SF16, options = list(lengthMenu = c(10, 25, 51), pageLength = 51))%>% formatCurrency(1:12, '', digits = 0)
+      DT::datatable(MF33SF16, options = list(lengthMenu = c(10, 25, 51), pageLength = 51))%>% formatCurrency(1:12, '', digits = 0)
 })
 
 output$mytable5 = DT::renderDataTable({
-  DT::datatable(MF121TP1, options = list(lengthMenu = c(10, 25, 51), pageLength = 51))
+      DT::datatable(MF121TP1, options = list(lengthMenu = c(10, 25, 51), pageLength = 51))
 })
 
 output$mytable6 = DT::renderDataTable({
-  DT::datatable(MF33GA16, options = list(lengthMenu = c(10, 25, 51), pageLength = 51))%>% formatCurrency(1:12, '')
+      DT::datatable(MF33GA16, options = list(lengthMenu = c(10, 25, 51), pageLength = 51))%>% formatCurrency(1:12, '')
 })
 }

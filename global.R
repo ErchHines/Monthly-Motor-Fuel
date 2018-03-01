@@ -4,6 +4,7 @@ library(reshape2)
 #Change the month in order to update to latest month of Report
 
 reportMonth <- "September"
+reportYear <- 2017
 
 
 GrossVolGas <- read.csv("data/GrossVolGas.csv", header = TRUE)
@@ -22,7 +23,7 @@ PercentChange <- PercentChange[,colSums(is.na(PercentChange))<nrow(PercentChange
 MGrossVolGas <- melt(GrossVolGas, id = c("StateName"))
 meltMF33SF17 <- melt(MF33SF17, id = c("State"))
 
-
+#Temporary changes to bring in timeseries data
 CAGA1216 <-read.csv("data/CAGA1216.csv", header = TRUE)
 CAGA1216$Date <- as.Date(CAGA1216$Date, format="%m/%d/%Y")
 CAGA1216$Gasoline <- as.integer(CAGA1216$Gasoline)
