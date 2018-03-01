@@ -38,6 +38,7 @@ table > thead > tr > th,
   opacity: 0.73;
   zoom: 0.9;
   transition: opacity 500ms 1s;
+  <button class="w3-button w3-black">Black</button>
 }
 #controls:hover {
   /* Fade in while hovering */

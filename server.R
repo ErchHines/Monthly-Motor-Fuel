@@ -49,11 +49,8 @@ output$map <- renderLeaflet({
       dashArray = "3",
       fillOpacity = 0.7,
       highlight = highlightOptions(
-        weight = 5,
-        color = "#666",
-        dashArray = "",
-        fillOpacity = 0.7,
-        bringToFront = TRUE),
+        fillOpacity = 1,
+        bringToFront = FALSE),
       label = labels,
       labelOptions = labelOptions(
         style = list("font-weight" = "normal", padding = "3px 8px"),

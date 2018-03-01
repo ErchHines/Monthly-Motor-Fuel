@@ -3,7 +3,7 @@ library(leaflet)
 # Choices for drop-downs
 vars <- MGrossVolGas$StateName
 
-navbarPage("FHWA Monthly Motor Fuel Report", id="nav",
+navbarPage("FHWA Monthly Motor Fuel Report", id="nav", 
 
   tabPanel("Fuels Map",
     div(class="outer",
@@ -27,10 +27,19 @@ navbarPage("FHWA Monthly Motor Fuel Report", id="nav",
 
         plotOutput("FuelbyMonth"),
         
-        uiOutput("FuelFigures")
-
+        uiOutput("FuelFigures"),
+        
+        shiny::actionButton(inputId='ab1', label="Dowload .xls", 
+                            icon = icon("file"), style="color: #fff; background-color: #268715; border-color: #2e6da4",
+                            onclick ="window.open('https://www.fhwa.dot.gov/policyinformation/motorfuel/sep17/sep17.xls', '_blank')"),
+        
+        shiny::actionButton(inputId='ab1', label="Dowload .pdf", 
+                            icon = icon("file"), style="color: #fff; background-color: red; border-color: #2e6da4",
+                            onclick ="window.open('https://www.fhwa.dot.gov/policyinformation/motorfuel/sep17/sep17.pdf', '_blank')") 
+        
+        
       ),
-
+      
       tags$div(id="cite",
         'Data based on monthly gasoline consumption reported by states'
       )
