@@ -7,6 +7,7 @@ library(ggplot2)
 library(reshape2)
 library(DT)
 library(stats)
+#library(ggseas)
 
 
 
@@ -18,7 +19,14 @@ output$decompose_ca <- renderPlot({
       ts_ca = ts(CAGA1216$Gasoline, frequency = 12, start = c(2012), end = c(2016,12))
       decompose_ca = stl(ts_ca, s.window = "periodic")
       plot(decompose_ca)
-  })
+      
+      # Alternative plot for displaying decomposition using ggseas
+      # ggsdc(CAGA1216, aes(x=Date, y=Gasoline),
+      #       method = "stl", s.window = "periodic", frequency = 12,
+      #       facet.titles = c("The original series", "The underlying trend", 
+      #                        "Regular seasonal patterns", "Remainder")) +
+      #       geom_line() 
+})
 
 ## Interactive Map ###########################################
 
@@ -65,11 +73,11 @@ output$map <- renderLeaflet({
 #Takes input from user (see ui.R) and returns a line graph of fuel consumption by month for the year
 
 stateReact <- reactive({
-  subset(MGrossVolGas, StateName == input$State) 
+      subset(MGrossVolGas, StateName == input$State) 
 })
 
 stateReactSF <- reactive({
-  subset(meltMF33SF17, State == input$State) 
+      subset(meltMF33SF17, State == input$State) 
 })
 
 
