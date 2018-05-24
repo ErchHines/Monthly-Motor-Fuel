@@ -52,7 +52,7 @@ navbarPage("FHWA Monthly Motor Fuel Report", id="nav",
   
   # creates the tabs and displays the tables
   tabPanel("Time Series",
-    h3("Gasoliine/Gasahol Time Series 2002 - 2017"),
+    h3("Gasoliine/Gasahol Time Series January 2006 - September 2017"),
     h5("The graph below extracts the seasonality from our monthly motor fuel 
        data to display an overal trend as well as an unexplained remainder. 
        In cases where there is a large remainder, 
