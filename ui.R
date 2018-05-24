@@ -2,6 +2,7 @@ library(leaflet)
 
 # Choices for drop-downs
 vars <- MGrossVolGas$StateName
+varsTs <- raw551$STATE_NAME
 
 navbarPage("FHWA Monthly Motor Fuel Report", id="nav", 
 
@@ -23,7 +24,10 @@ navbarPage("FHWA Monthly Motor Fuel Report", id="nav",
 
     h3(reportYear,"Monthly Gasoline Consumption"),
 
-    selectInput("State", "Click on a state or select below:", vars, multiple = FALSE, selected = 1),
+    selectInput(
+      "State", "Click on a state or select below:", vars, 
+      multiple = FALSE, selected = 1
+    ),
 
     plotOutput("FuelbyMonth"),
     
@@ -47,11 +51,17 @@ navbarPage("FHWA Monthly Motor Fuel Report", id="nav",
   ),
   
   # creates the tabs and displays the tables
-
-  
   tabPanel("Time Series",
-    h3("California Gasoliine/Gasahol Time Series 2012 - 2016"),
-    plotOutput(outputId = "decompose_ca", height = 500, width = 700)
+    h3("Gasoliine/Gasahol Time Series 2002 - 2017"),
+    h5("The graph below extracts the seasonality from our monthly motor fuel 
+       data to display an overal trend as well as an unexplained remainder. 
+       In cases where there is a large remainder, 
+       data should be checked with the state."),
+    selectInput(
+      "StateTs", "Click on a state or select below:", varsTs, 
+      multiple = FALSE, selected = 1
+    ),
+    plotOutput(outputId = "plot", height = 750, width = 1300)
   ),
   
   tabPanel("MF33G",
