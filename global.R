@@ -1,5 +1,6 @@
 library(dplyr)
 library(reshape2)
+library(lubridate)
 
 #### Note: This application is a prototype and reads in data from .csv data files, 
 # the final application will pull data directly from the server using RODBC
@@ -33,6 +34,22 @@ raw551$Date <- as.Date(raw551$Date, "%m/%d/%Y")
 
 #combine gasoline and gasohol numbers
 raw551$gas <- raw551$GASOHOL_VOLUME + raw551$GASOLINE_VOLUME
+raw551$dieselLPG <- raw551$DIESEL_VOLUME + raw551$LPG_VOLUME
 
 #Just use the dates for current report, remove early years with odd data
 raw551 <- subset(raw551, Date >= "2006-01-01" & Date <= "2017-09-01")
+
+#The following creates a table with the number of gallons per day
+raw551Days <- raw551
+
+#Use the days_in_month function from lubridate and apply over the date column
+raw551Days$Days <- sapply(raw551Days$Date, days_in_month)
+
+#Divide our gallons by the number of days in the month
+raw551Days$gas <- raw551Days$gas / raw551Days$Days
+raw551Days$dieselLPG <- raw551Days$dieselLPG / raw551Days$Days
+
+# initialize global variable to record selected (clicked) rows
+selected_points <- raw551[0, ]
+str(selected_points)
+
