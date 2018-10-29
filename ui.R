@@ -1,7 +1,4 @@
-library(leaflet)
-library(DT)
-
-# Choices for drop-downs
+#Choices for drop downs
 vars <- MGrossVolGas$StateName
 varsTs <- raw551$STATE_NAME
 dates <- raw551$Date

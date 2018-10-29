@@ -1,22 +1,6 @@
-library(leaflet)
-library(RColorBrewer)
-library(scales)
-library(geojsonio)
-library(sp)
-library(ggplot2)
-library(reshape2)
-library(DT)
-library(ggseas)
-library(forecast)
-library(ggthemes)
-library(plyr)
-
 function(input, output, session){
 
   ## Interactive Map ###########################################
-  
-  # loads a map with state boundaries
-  states <- geojsonio::geojson_read("data/us-states.geojson", what = "sp")
   
   # creates the colors for the map and places them in bins
   bins <- c(-20,-10, -5, -1, 0, 1, 5, 10, 20)

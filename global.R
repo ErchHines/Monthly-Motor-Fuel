@@ -1,9 +1,24 @@
+library(RColorBrewer)
+library(scales)
+library(geojsonio)
+library(sp)
+library(ggplot2)
+library(reshape2)
+library(ggseas)
+library(forecast)
+library(ggthemes)
+library(plyr)
 library(dplyr)
 library(reshape2)
 library(lubridate)
+library(leaflet)
+library(DT)
 
 #### Note: This application is a prototype and reads in data from .csv data files, 
 # the final application will pull data directly from the server using RODBC
+
+# loads a map with state boundaries
+states <- geojson_read("data/us-states.geojson", what = "sp")
 
 #Change the month in order to update to latest month of Report
 reportMonth <- "September"
